@@ -1,37 +1,38 @@
-# Capstone-Project-6-
-# Industrial Copper Modeling Application
+# Industrial Copper Modeling
 
-## Overview
-Welcome to the Industrial Copper Modeling Application! This Streamlit app provides predictive modeling capabilities for industrial copper based on various input parameters. Whether you need to predict the selling price or status of copper orders, this tool has you covered.
+## Skills Takeaway From This Project
+- Python scripting
+- Data Preprocessing
+- Exploratory Data Analysis (EDA)
+- Streamlit
+- Machine Learning (Regression and Classification)
+- Model Evaluation and Optimization
+- Feature Engineering
+- Pickle for model serialization
+- GitHub version control and repository management
+- Creating a README file
+- Creating a demo video and sharing on LinkedIn
 
-## Features
-- Predict the selling price of industrial copper based on quantity, thickness, width, etc.
-- Predict the status (e.g., won or lost) of copper orders using machine learning models.
-- User-friendly interface for easy navigation and input.
-- Real-time predictions with fast response times.
+## Domain
+Manufacturing
 
-## How to Use
-1. Install the necessary dependencies: Make sure you have Python installed on your system along with the required libraries listed in `requirements.txt`.
-2. Clone the repository: Use `git clone` to download the project files to your local machine.
-3. Navigate to the project directory: Use `cd` command to go to the directory where you cloned the repository.
-4. Run the Streamlit app: Execute `streamlit run copperml.py` in your terminal to start the Streamlit server.
-5. Access the app: Open the provided URL (usually `http://localhost:8501`) in your web browser to access the app.
+## Problem Statement
+The copper industry deals with less complex data related to sales and pricing. However, this data may suffer from issues such as skewness and noisy data, affecting the accuracy of manual predictions. This project aims to address these challenges by developing machine learning models for predicting the selling price and status (Won or Lost) of industrial copper orders. The models will utilize advanced techniques such as data preprocessing, feature engineering, and model optimization to improve prediction accuracy and efficiency.
 
-## File Structure
-- `copperml.py`: Main Python script containing the Streamlit application code.
-- `requirements.txt`: List of Python dependencies required to run the application.
+## About the Data
+The dataset contains various features related to copper transactions, including quantity tons, customer information, country, item type, application, thickness, width, material reference, product reference, delivery date, and selling price. The target variables are the selling price and status of the transactions.
 
-## Usage
-- Once the app is running, you'll see a navigation menu with options to select:
-  - **Home**: Overview of the application and its features.
-  - **Predict Selling Price**: Interface for predicting the selling price of industrial copper.
-  - **Predict Status**: Interface for predicting the status of copper orders.
-- Select the desired option and input the relevant parameters.
-- Click the "Predict" button to see the results.
+## Approach
+1. **Data Understanding:** Analyze the dataset to identify variable types and distributions.
+2. **Data Preprocessing:** Handle missing values, outliers, and skewness in the dataset. Encode categorical variables and perform feature engineering.
+3. **EDA:** Visualize data distributions, outliers, and relationships between variables using Seaborn.
+4. **Model Building and Evaluation:** Train and evaluate regression and classification models using Scikit-learn. Optimize model hyperparameters using cross-validation and grid search.
+5. **Model GUI:** Create an interactive Streamlit page for predicting selling price and status based on user input.
 
-## Dependencies
-- Streamlit: For building the web application interface.
-- Pandas, NumPy: For data manipulation and processing.
-- Scikit-learn: For machine learning models and preprocessing.
-- Pickle: For loading pre-trained models.
-- Re: For regular expression pattern matching.
+## Learning Outcomes
+- Proficiency in Python programming and data analysis libraries.
+- Understanding of data preprocessing techniques and exploratory data analysis.
+- Experience in building and optimizing machine learning models for regression and classification tasks.
+- Knowledge of feature engineering techniques and model evaluation metrics.
+- Ability to create interactive web applications using Streamlit.
+- Understanding of challenges and best practices in the manufacturing domain.
