@@ -77,11 +77,12 @@ if menu == "Home":
     By using this application, you agree to abide by the terms of use outlined in the [Terms of Use](#) section.
     
     """)
+
+# Predict Selling Price Page
 if menu == "PREDICT SELLING PRICE":
 
-     #Here we declaring the possible values for the dropdown menus
-    status_options = ['Won', 'Draft', 'To be approved', 'Lost', 'Not lost for AM', 'Wonderful', 'Revised', 'Offered',
-                      'Offerable']
+    #Here we declaring the possible values for the dropdown menus
+    status_options = ['Won', 'Draft', 'To be approved', 'Lost', 'Not lost for AM', 'Wonderful', 'Revised', 'Offered','Offerable']
     item_type_options = ['W', 'WI', 'S', 'Others', 'PL', 'IPL', 'SLAWR']
     country_options = [28., 25., 30., 32., 38., 78., 27., 77., 113., 79., 26., 39., 40., 84., 80., 107., 89.]
     application_options = [10., 41., 28., 59., 15., 4., 38., 56., 42., 26., 27., 19., 20., 66., 29., 22., 40., 25., 67.,
@@ -93,10 +94,9 @@ if menu == "PREDICT SELLING PRICE":
                '1671876026', '1690738206', '1690738219', '1693867550', '1693867563', '1721130331', '1722207579']
     
     # Define the widgets for user input
-    with st.container(border=True):
-        col1, col2, col3 = st.columns([5, 2, 5])
+    with st.container():
+        col1, col3 = st.columns([5, 5])
         with col1:
-            st.write(' ')
             status = st.selectbox("Status", status_options, key=1)
             item_type = st.selectbox("Item Type", item_type_options, key=2)
             country = st.selectbox("Country", sorted(country_options), key=3)
@@ -115,14 +115,14 @@ if menu == "PREDICT SELLING PRICE":
             
             submit_button = st.button(label="PREDICT SELLING PRICE")
             st.markdown("""
-        <style>
-        div.stButton > button:first-child {
-            background-color: #004aad;
-            color: white;
-            width: 100%;
-        }
-        </style>
-    """, unsafe_allow_html=True)
+                <style>
+                div.stButton > button:first-child {
+                    background-color: #004aad;
+                    color: white;
+                    width: 100%;
+                }
+                </style>
+            """, unsafe_allow_html=True)
 
         flag = 0
         pattern = "^(?:\d+|\d*\.\d+)$"
@@ -138,33 +138,38 @@ if menu == "PREDICT SELLING PRICE":
                 st.write("please enter a valid number space not allowed")
             else:
                 st.write("You have entered an invalid value: ",i)  
+        elif submit_button and flag == 0:
+            # Check if entered values exceed maximum limits
+            if (float(quantity_tons) > 1722207579 or
+                float(thickness) > 400 or
+                float(width) > 2990 or
+                float(customer_id) > 30408185):
+                st.error("One or more input values exceed the maximum limit.")
+            else:
                 
-        if submit_button and flag==0:
-            
-            import pickle
-            with open(r"C:\Users\rajan\OneDrive\Desktop\Copper ML\TrainedModel.pkl", 'rb') as file:
-                loaded_model = pickle.load(file)
-            with open(r'C:\Users\rajan\OneDrive\Desktop\Copper ML\scaler.pkl', 'rb') as f:
-                scaler_loaded = pickle.load(f)
-            with open(r"C:\Users\rajan\OneDrive\Desktop\Copper ML\t.pkl", 'rb') as f:
-                t_loaded = pickle.load(f)
-            with open(r"C:\Users\rajan\OneDrive\Desktop\Copper ML\s.pkl", 'rb') as f:
-                s_loaded = pickle.load(f)
+                import pickle
+                with open(r"C:\Users\rajan\OneDrive\Desktop\Copper ML\model.pkl", 'rb') as file:
+                    loaded_model = pickle.load(file)
+                with open(r'C:\Users\rajan\OneDrive\Desktop\Copper ML\scaler.pkl', 'rb') as f:
+                    scaler_loaded = pickle.load(f)
+                with open(r"C:\Users\rajan\OneDrive\Desktop\Copper ML\ohe_item_type.pkl", 'rb') as f:
+                    t_loaded = pickle.load(f)
+                with open(r"C:\Users\rajan\OneDrive\Desktop\Copper ML\ohe_status.pkl", 'rb') as f:
+                    s_loaded = pickle.load(f)
 
-            new_sample= np.array([[np.log(float(quantity_tons)),application,np.log(float(thickness)),float(width),country,float(customer_id),int(product_ref),item_type,status]])
-            new_sample_ohe = t_loaded.transform(new_sample[:, [7]]).toarray()
-            new_sample_be = s_loaded.transform(new_sample[:, [8]]).toarray()
-            new_sample = np.concatenate((new_sample[:, [0,1,2, 3, 4, 5, 6,]], new_sample_ohe, new_sample_be), axis=1)
-            new_sample1 = scaler_loaded.transform(new_sample)
-            new_pred = loaded_model.predict(new_sample1)[0]
-            st.write('## :green[Predicted selling price:] ', np.exp(new_pred))
+                new_sample= np.array([[np.log(float(quantity_tons)),application,np.log(float(thickness)),float(width),country,float(customer_id),int(product_ref),item_type,status]])
+                new_sample_ohe = t_loaded.transform(new_sample[:, [7]]).toarray()
+                new_sample_be = s_loaded.transform(new_sample[:, [8]]).toarray()
+                new_sample = np.concatenate((new_sample[:, [0,1,2, 3, 4, 5, 6,]], new_sample_ohe, new_sample_be), axis=1)
+                new_sample1 = scaler_loaded.transform(new_sample)
+                new_pred = loaded_model.predict(new_sample1)[0]
+                st.write('## :green[Predicted selling price:] ', np.exp(new_pred))
 
-
+# Predict Status Page
 if menu == "PREDICT STATUS":
 
-     #Here we declaring the possible values for the dropdown menus
-    status_options = ['Won', 'Draft', 'To be approved', 'Lost', 'Not lost for AM', 'Wonderful', 'Revised', 'Offered',
-                      'Offerable']
+    #Here we declaring the possible values for the dropdown menus
+    status_options = ['Won', 'Draft', 'To be approved', 'Lost', 'Not lost for AM', 'Wonderful', 'Revised', 'Offered','Offerable']
     item_type_options = ['W', 'WI', 'S', 'Others', 'PL', 'IPL', 'SLAWR']
     country_options = [28., 25., 30., 32., 38., 78., 27., 77., 113., 79., 26., 39., 40., 84., 80., 107., 89.]
     application_options = [10., 41., 28., 59., 15., 4., 38., 56., 42., 26., 27., 19., 20., 66., 29., 22., 40., 25., 67.,
@@ -176,8 +181,8 @@ if menu == "PREDICT STATUS":
                '1671876026', '1690738206', '1690738219', '1693867550', '1693867563', '1721130331', '1722207579']
     
      # Define the widgets for user input
-    with st.container(border=True):
-        col1, col2, col3 = st.columns([5, 2, 5])
+    with st.container():
+        col1, col3 = st.columns([5, 5])
         with col1:
             cquantity_tons = st.text_input("Enter Quantity Tons (Min:611728 & Max:1722207579)")
             cthickness = st.text_input("Enter thickness (Min:0.18 & Max:400)")
@@ -207,32 +212,35 @@ if menu == "PREDICT STATUS":
             st.write("please enter a valid number space not allowed")
         else:
             st.write("You have entered an invalid value: ", k)
+    elif csubmit_button and cflag == 0:
+            # Check if entered values exceed maximum limits
+            if (float(cquantity_tons) > 1722207579 or
+                float(cthickness) > 400 or
+                float(cwidth) > 2990 or
+                float(ccustomer_id) > 30408185):
+                st.error("One or more input values exceed the maximum limit.")
+            else:
+                import pickle
 
-    if csubmit_button and cflag == 0:
-        import pickle
+                with open(r"C:\Users\rajan\OneDrive\Desktop\Copper ML\cmodel.pkl", 'rb') as file:
+                    cloaded_model = pickle.load(file)
 
-        with open(r"C:\Users\rajan\OneDrive\Desktop\Copper ML\ctrained_Model.pkl", 'rb') as file:
-            cloaded_model = pickle.load(file)
+                with open(r"C:\Users\rajan\OneDrive\Desktop\Copper ML\cscaler.pkl", 'rb') as f:
+                    cscaler_loaded = pickle.load(f)
 
-        with open(r"C:\Users\rajan\OneDrive\Desktop\Copper ML\cscaler.pkl", 'rb') as f:
-            cscaler_loaded = pickle.load(f)
+                with open(r"C:\Users\rajan\OneDrive\Desktop\Copper ML\cohe_item_type.pkl", 'rb') as f:
+                    ct_loaded = pickle.load(f)
 
-        with open(r"C:\Users\rajan\OneDrive\Desktop\Copper ML\ct.pkl", 'rb') as f:
-            ct_loaded = pickle.load(f)
+                # Predict the status for a new sample
+                new_sample = np.array([[np.log(float(cquantity_tons)), np.log(float(cselling)), capplication,np.log(float(cthickness)), float(cwidth), ccountry, int(ccustomer_id), int(cproduct_ref),citem_type]])
+                new_sample_ohe = ct_loaded.transform(new_sample[:, [8]]).toarray()
+                new_sample = np.concatenate((new_sample[:, [0, 1, 2, 3, 4, 5, 6, 7]], new_sample_ohe), axis=1)
+                new_sample = cscaler_loaded.transform(new_sample)
+                new_pred = cloaded_model.predict(new_sample)
+                if new_pred == 1:
+                    st.write('## :green[The Status is Won] ')
+                else:
+                    st.write('## :red[The status is Lost] ')
 
-        # Predict the status for a new sample
-        # 'quantity tons_log', 'selling_price_log','application', 'thickness_log', 'width','country','customer','product_ref']].values, X_ohe
-        new_sample = np.array([[np.log(float(cquantity_tons)), np.log(float(cselling)), capplication,
-                                np.log(float(cthickness)), float(cwidth), ccountry, int(ccustomer_id), int(product_ref),
-                                citem_type]])
-        new_sample_ohe = ct_loaded.transform(new_sample[:, [8]]).toarray()
-        new_sample = np.concatenate((new_sample[:, [0, 1, 2, 3, 4, 5, 6, 7]], new_sample_ohe), axis=1)
-        new_sample = cscaler_loaded.transform(new_sample)
-        new_pred = cloaded_model.predict(new_sample)
-        if new_pred == 1:
-            st.write('## :green[The Status is Won] ')
-        else:
-            st.write('## :red[The status is Lost] ')
-
-st.write(f'<h6 style="color:#ee4647;">App Created by M G R</h6>', unsafe_allow_html=True)
+st.write(f'<h6 style="color:#ee4647;">App Created by M G Rajananthini</h6>', unsafe_allow_html=True)
 
